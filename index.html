@@ -17,21 +17,21 @@
 
     <section class="main-content">
       <h3>
-<a id="蓝牙4.0——Android 智能手环开发" class="anchor" href="#蓝牙4.0——Android BLE开发" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
+<a id="蓝牙4.0——Android 智能手环开发" class="anchor" href="#蓝牙4.0——Android BLE开发" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>蓝牙5.0——Android 智能手环开发.</h3>
 
-<p>安卓4.3(API 18)为BLE的核心功能提供平台支持和API，App可以利用它来发现设备、查询服务和读写特性。相比传统的蓝牙，BLE更显著的特点是低功耗。这一优点使android App可以与具有低功耗要求的BLE设备通信，如近距离传感器、心脏速率监视器、健身设备等。
+<p>安卓5.0(API 21)为BLE的核心功能提供平台支持和API，App可以利用它来发现设备、查询服务和读写特性。相比传统的蓝牙，BLE更显著的特点是低功耗。这一优点使android App可以与具有低功耗要求的BLE设备通信，如近距离传感器、心脏速率监视器、健身设备等。
 
 关键术语和概念
-
+<p>
 Generic Attribute Profile（GATT）—GATT配置文件是一个通用规范，用于在BLE链路上发送和接收被称为“属性”的数据块。目前所有的BLE应用都基于GATT。 蓝牙SIG规定了许多低功耗设备的配置文件。配置文件是设备如何在特定的应用程序中工作的规格说明。注意一个设备可以实现多个配置文件。例如，一个设备可能包括心率监测仪和电量检测。
 Attribute Protocol（ATT）—GATT在ATT协议基础上建立，也被称为GATT/ATT。ATT对在BLE设备上运行进行了优化，为此，它使用了尽可能少的字节。每个属性通过一个唯一的的统一标识符（UUID）来标识，每个String类型UUID使用128 bit标准格式。属性通过ATT被格式化为characteristics和services。
 Characteristic 一个characteristic包括一个单一变量和0-n个用来描述characteristic变量的descriptor，characteristic可以被认为是一个类型，类似于类。
 Descriptor Descriptor用来描述characteristic变量的属性。例如，一个descriptor可以规定一个可读的描述，或者一个characteristic变量可接受的范围，或者一个characteristic变量特定的测量单位。
 Service service是characteristic的集合。例如，你可能有一个叫“Heart Rate Monitor(心率监测仪)”的service，它包括了很多characteristics，如“heart rate measurement(心率测量)”等。你可以在bluetooth.org 找到一个目前支持的基于GATT的配置文件和服务列表。
 角色和责任
-
+<p>
 以下是Android设备与BLE设备交互时的角色和责任：
-
+<p>
 中央 VS 外围设备。 适用于BLE连接本身。中央设备扫描，寻找广播；外围设备发出广播。
 GATT 服务端 VS GATT 客户端。决定了两个设备在建立连接后如何互相交流。
 为了方便理解，想象你有一个Android手机和一个用于活动跟踪BLE设备，手机支持中央角色，活动跟踪器支持外围（为了建立BLE连接你需要注意两件事，只支持外围设备的两方或者只支持中央设备的两方不能互相通信）。
