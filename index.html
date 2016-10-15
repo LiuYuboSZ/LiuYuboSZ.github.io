@@ -17,6 +17,43 @@
     </section>
 
     <section class="main-content">
+	    <h3>
+<a id="Android RTMP直播推流方案选择" class="anchor" href="Android RTMP直播推流方案选择" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Android RTMP直播推流方案选择</h3>
+
+<p>1、什么是RTMP
+<p>
+RTMP是Real Time Messaging Protocol（实时消息传输协议）的首字母缩写。该协议基于TCP，是一个协议族，包括RTMP基本协议及RTMPT/RTMPS/RTMPE等多种变种。RTMP是一种设计用来进行实时数据通信的网络协议，主要用来在Flash/AIR平台和支持RTMP协议的流媒体/交互服务器之间进行音视频和数据通信。支持该协议的软件包括Adobe Media Server/Ultrant Media Server/red5等。
+<p>
+2、方案选择
+<p>
+针对Android端的RTMP推流选择方案主要有两大类：
+<p>
+1、利用FFmpeg进行直播推流
+<p>
+利用FFmpeg，坑比较多，请自行百度。
+<p>
+2、利用开源的SDK
+<p>
+3、主要说明开源SDK的选择
+<p>
+百度云推流SDK: 官方文档
+<p>
+优点：官方文档说明十分详尽，30分钟可以完全了解，接口明了。
+<p>
+缺点：不支持对Camera的丰富操作，比如 Filter(滤镜)。只能进行简单的缩放、对焦等功能
+<p>
+七牛推流SDK:Github上的官方源码及说明
+<p>
+优点：提供丰富的接口，可以满足各种复杂的需求。需要权限验证，安全性有一定保障。提供CDN加速选择。
+<p>
+缺点：后端代码需要利用七牛的SDK,不过可以二次开发。
+<p>
+网易云推流SDK：官方文档
+<p>
+优点：官方文档说明比较好
+<p>
+缺点：直播推流地址由网易云信提供，所以限制比较大。并且还要收费。
+</p>
       <h3>
 <a id="蓝牙4.0——Android 智能手环开发" class="anchor" href="#蓝牙4.0——Android BLE开发" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>蓝牙5.0——Android 智能手环开发.</h3>
 
@@ -394,11 +431,6 @@ public void close() {
 }</code
 
 <a href="https://guides.github.com/features/mastering-markdown/">using GitHub Flavored Markdown</a>, select a template crafted by a designer, and publish. After your page is generated, you can check out the new <code>gh-pages</code> branch locally. If you’re using GitHub Desktop, simply sync your repository and you’ll see the new branch.</p>
-
-<h3>
-<a id="designer-templates" class="anchor" href="#designer-templates" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Designer Templates</h3>
-
-<p>We’ve crafted some handsome templates for you to use. Go ahead and click 'Continue to layouts' to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved.</p>
 
 <h3>
 <a id="creating-pages-manually" class="anchor" href="#creating-pages-manually" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Creating pages manually</h3>
