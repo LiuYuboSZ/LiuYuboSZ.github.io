@@ -18,7 +18,7 @@
     <section class="main-content">
 	    <h3>
 <a id="Android RTMP直播推流方案选择" class="anchor" href="Android RTMP直播推流方案选择" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Android RTMP直播推流方案选择</h3>
-
+<p>源码加qq：13208929，发送：“我爱刘玉博”获取
 <p>1、什么是RTMP
 <p>
 RTMP是Real Time Messaging Protocol（实时消息传输协议）的首字母缩写。该协议基于TCP，是一个协议族，包括RTMP基本协议及RTMPT/RTMPS/RTMPE等多种变种。RTMP是一种设计用来进行实时数据通信的网络协议，主要用来在Flash/AIR平台和支持RTMP协议的流媒体/交互服务器之间进行音视频和数据通信。支持该协议的软件包括Adobe Media Server/Ultrant Media Server/red5等。
@@ -56,22 +56,15 @@ RTMP是Real Time Messaging Protocol（实时消息传输协议）的首字母缩
 <h3>
 	
 <a id="蓝牙4.0——Android 智能手环开发" class="anchor" href="#蓝牙4.0——Android BLE开发" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>蓝牙4.0——Android 智能手环开发.</h3>
-
+<p>源码加qq：13208929，发送：“我爱刘玉博”获取
 <p>安卓5.0(API 21)为BLE的核心功能提供平台支持和API，App可以利用它来发现设备、查询服务和读写特性。相比传统的蓝牙，BLE更显著的特点是低功耗。这一优点使android App可以与具有低功耗要求的BLE设备通信，如近距离传感器、心脏速率监视器、健身设备等。
-
-关键术语和概念
 <p>
-Generic Attribute Profile（GATT）—GATT配置文件是一个通用规范，用于在BLE链路上发送和接收被称为“属性”的数据块。目前所有的BLE应用都基于GATT。 蓝牙SIG规定了许多低功耗设备的配置文件。配置文件是设备如何在特定的应用程序中工作的规格说明。注意一个设备可以实现多个配置文件。例如，一个设备可能包括心率监测仪和电量检测。
-Attribute Protocol（ATT）—GATT在ATT协议基础上建立，也被称为GATT/ATT。ATT对在BLE设备上运行进行了优化，为此，它使用了尽可能少的字节。每个属性通过一个唯一的的统一标识符（UUID）来标识，每个String类型UUID使用128 bit标准格式。属性通过ATT被格式化为characteristics和services。
-Characteristic 一个characteristic包括一个单一变量和0-n个用来描述characteristic变量的descriptor，characteristic可以被认为是一个类型，类似于类。
-Descriptor Descriptor用来描述characteristic变量的属性。例如，一个descriptor可以规定一个可读的描述，或者一个characteristic变量可接受的范围，或者一个characteristic变量特定的测量单位。
-Service service是characteristic的集合。例如，你可能有一个叫“Heart Rate Monitor(心率监测仪)”的service，它包括了很多characteristics，如“heart rate measurement(心率测量)”等。你可以在bluetooth.org 找到一个目前支持的基于GATT的配置文件和服务列表。
-角色和责任
-<p>
-以下是Android设备与BLE设备交互时的角色和责任：
+以下是Android设备与BLE设备交互时的角色和责任：（源码加qq：13208929，发送：“我爱刘玉博”获取）
 <p>
 中央 VS 外围设备。 适用于BLE连接本身。中央设备扫描，寻找广播；外围设备发出广播。
+<p>
 GATT 服务端 VS GATT 客户端。决定了两个设备在建立连接后如何互相交流。
+<p>
 为了方便理解，想象你有一个Android手机和一个用于活动跟踪BLE设备，手机支持中央角色，活动跟踪器支持外围（为了建立BLE连接你需要注意两件事，只支持外围设备的两方或者只支持中央设备的两方不能互相通信）。
 <p>
 当手机和运动追踪器建立连接后，他们开始向另一方传输GATT数据。哪一方作为服务器取决于他们传输数据的种类。例如，如果运动追踪器想向手机报告传感器数据，运动追踪器是服务端。如果运动追踪器更新来自手机的数据，手机会作为服务端。
@@ -86,20 +79,9 @@ BLE权限
 <p>
 在你的app manifest文件中声明蓝牙权限。
 <p>
-<uses-permission android:name="android.permission.BLUETOOTH"/>
-<p>
-<uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>"
-<p>
 如果想声明你的app只为具有BLE的设备提供，在manifest文件中包括：
 <p>
-<uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
-但是如果想让你的app提供给那些不支持BLE的设备，需要在manifest中包括上面代码并设置required="false"，然后在运行时可以通过使用PackageManager.hasSystemFeature()确定BLE的可用性。
-// 使用此检查确定BLE是否支持在设备上，然后你可以有选择性禁用BLE相关的功能
-if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
-    Toast.makeText(this, R.string.ble_not_supported, Toast.LENGTH_SHORT).show();
-    finish();
-}
-设置BLE
+使用此检查确定BLE是否支持在设备上，然后你可以有选择性禁用BLE相关的功能
 <p>
 你的app能与BLE通信之前，你需要确认设备是否支持BLE，如果支持，确认已经启用。注意如果<uses-feature.../>设置为false，这个检查才是必需的。
 <p>
@@ -107,15 +89,9 @@ if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) 
 <p>
 获取 BluetoothAdapter
 <p>
-所有的蓝牙活动都需要蓝牙适配器。BluetoothAdapter代表设备本身的蓝牙适配器(蓝牙无线）。整个系统只有一个蓝牙适配器，而且你的app使用它与系统交互。下面的代码片段显示了如何得到适配器。注意该方法使用getSystemService（）]返回BluetoothManager，然后将其用于获取适配器的一个实例。Android 4.3（API 18）引入BluetoothManager。
-
-// 初始化蓝牙适配器
-final BluetoothManager bluetoothManager =
-        (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
-mBluetoothAdapter = bluetoothManager.getAdapter();
-开启蓝牙
+ 初始化蓝牙适配器
 <p>
-接下来，你需要确认蓝牙是否开启。调用isEnabled())去检测蓝牙当前是否开启。如果该方法返回false,蓝牙被禁用。下面的代码检查蓝牙是否开启，如果没有开启，将显示错误提示用户去设置开启蓝牙。
+开启蓝牙
 <p>
 确保蓝牙在设备上可以开启
 <p>
@@ -132,24 +108,14 @@ mBluetoothAdapter = bluetoothManager.getAdapter();
 扫描和显示可以提供的蓝牙设备.
 <p>
 10秒后停止寻找.
-型的外围设备，可以改为调用startLeScan(UUID[], BluetoothAdapter.LeScanCallback)),需要提供你的app支持的GATT services的UUID对象数组。
 <p>
 作为BLE扫描结果的接口，BluetoothAdapter.LeScanCallback的实现。
 <p>
-注意：只能扫描BLE设备或者扫描传统蓝牙设备，不能同时扫描BLE和传统蓝牙设备。
-<p>
 连接到GATT服务端
 <p>
-与一个BLE设备交互的第一步就是连接它——更具体的，连接到BLE设备上的GATT服务端。为了连接到BLE设备上的GATT服务端，需要使用connectGatt( )方法。这个方法需要三个参数：一个Context对象，自动连接（boolean值,表示只要BLE设备可用是否自动连接到它），和BluetoothGattCallback调用。
-<p>
-mBluetoothGatt = device.connectGatt(this, false, mGattCallback);
-连接到GATT服务端时，由BLE设备做主机，并返回一个BluetoothGatt实例，然后你可以使用这个实例来进行GATT客户端操作。请求方（Android app)是GATT客户端。BluetoothGattCallback用于传递结果给用户，例如连接状态，以及任何进一步GATT客户端操作。
+与一个BLE设备交互的第一步就是连接它——更具体的，连接到BLE设备上的GATT服务端。
 <p>
 这个BLE APP提供了一个activity（DeviceControlActivity)来连接，显示数据，显示该设备支持的GATT services和characteristics。根据用户的输入，这个activity与BluetoothLeService通信，通过Android BLE API实现与BLE设备交互。
-<p>
-//通过BLE API服务端与BLE设备交互
-public class BluetoothLeService extends Service {
-    private final static String TAG = BluetoothLeService.class.getSimpleName();
 <p>
 通过BLE API的不同类型的回调方法
 <p>
