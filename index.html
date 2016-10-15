@@ -36,23 +36,23 @@ Service service是characteristic的集合。例如，你可能有一个叫“Hea
 中央 VS 外围设备。 适用于BLE连接本身。中央设备扫描，寻找广播；外围设备发出广播。
 GATT 服务端 VS GATT 客户端。决定了两个设备在建立连接后如何互相交流。
 为了方便理解，想象你有一个Android手机和一个用于活动跟踪BLE设备，手机支持中央角色，活动跟踪器支持外围（为了建立BLE连接你需要注意两件事，只支持外围设备的两方或者只支持中央设备的两方不能互相通信）。
-
+<p>
 当手机和运动追踪器建立连接后，他们开始向另一方传输GATT数据。哪一方作为服务器取决于他们传输数据的种类。例如，如果运动追踪器想向手机报告传感器数据，运动追踪器是服务端。如果运动追踪器更新来自手机的数据，手机会作为服务端。
-
+<p>
 在这份文档的例子中，android app(运行在android设备上）作为GATT客户端。app从gatt服务端获得数据，gatt服务端即支持Heart Rate Profile(心率配置）的BLE心率监测仪。但是你可以自己设计android app去扮演GATT服务端角色。更多信息见BluetoothGattServer。
-
+<p>
 BLE权限
-
+<p>
 为了在app中使用蓝牙功能，必须声明蓝牙权限BLUETOOTH。利用这个权限去执行蓝牙通信，例如请求连接、接受连接、和传输数据。
-
+<p>
 如果想让你的app启动设备发现或操纵蓝牙设置，必须声明BLUETOOTH_ADMIN权限。注意：如果你使用BLUETOOTH_ADMIN权限，你也必须声明BLUETOOTH权限。
-
+<p>
 在你的app manifest文件中声明蓝牙权限。
-
+<p>
 <uses-permission android:name="android.permission.BLUETOOTH"/>
 <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>"
 如果想声明你的app只为具有BLE的设备提供，在manifest文件中包括：
-
+<p>
 <uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
 但是如果想让你的app提供给那些不支持BLE的设备，需要在manifest中包括上面代码并设置required="false"，然后在运行时可以通过使用PackageManager.hasSystemFeature()确定BLE的可用性。
 // 使用此检查确定BLE是否支持在设备上，然后你可以有选择性禁用BLE相关的功能
@@ -61,13 +61,13 @@ if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) 
     finish();
 }
 设置BLE
-
+<p>
 你的app能与BLE通信之前，你需要确认设备是否支持BLE，如果支持，确认已经启用。注意如果<uses-feature.../>设置为false，这个检查才是必需的。
-
+<p>
 如果不支持BLE，那么你应该适当地禁用部分BLE功能。如果支持BLE但被禁用，你可以无需离开应用程序而要求用户启动蓝牙。使用BluetoothAdapter两步完成该设置。
-
+<p>
 获取 BluetoothAdapter
-
+<p>
 所有的蓝牙活动都需要蓝牙适配器。BluetoothAdapter代表设备本身的蓝牙适配器(蓝牙无线）。整个系统只有一个蓝牙适配器，而且你的app使用它与系统交互。下面的代码片段显示了如何得到适配器。注意该方法使用getSystemService（）]返回BluetoothManager，然后将其用于获取适配器的一个实例。Android 4.3（API 18）引入BluetoothManager。
 
 // 初始化蓝牙适配器
@@ -75,29 +75,29 @@ final BluetoothManager bluetoothManager =
         (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
 mBluetoothAdapter = bluetoothManager.getAdapter();
 开启蓝牙
-
+<p>
 接下来，你需要确认蓝牙是否开启。调用isEnabled())去检测蓝牙当前是否开启。如果该方法返回false,蓝牙被禁用。下面的代码检查蓝牙是否开启，如果没有开启，将显示错误提示用户去设置开启蓝牙。
-
+<p>
 // 确保蓝牙在设备上可以开启
 if (mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled()) {
    Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
    startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
 }
 发现BLE设备
-
+<p>
 为了发现BLE设备，使用startLeScan())方法。这个方法需要一个参数BluetoothAdapter.LeScanCallback。你必须实现它的回调函数，那就是返回的扫描结果。因为扫描非常消耗电量，你应当遵守以下准则：
-
+<p>
 只要找到所需的设备，停止扫描。
 不要在循环里扫描，并且对扫描设置时间限制。以前可用的设备可能已经移出范围，继续扫描消耗电池电量。
 下面代码显示了如何开始和停止一个扫描：
-
+<p>
 // 扫描和显示可以提供的蓝牙设备.
-
+<p>
 public class DeviceScanActivity extends ListActivity {
     private BluetoothAdapter mBluetoothAdapter;
     private boolean mScanning;
     private Handler mHandler;
-
+<p>
 
 // 10秒后停止寻找.
 private static final long SCAN_PERIOD = 10000;
@@ -124,9 +124,9 @@ private void scanLeDevice(final boolean enable) {
 ...
 }
 如果你只想扫描指定类型的外围设备，可以改为调用startLeScan(UUID[], BluetoothAdapter.LeScanCallback)),需要提供你的app支持的GATT services的UUID对象数组。
-
+<p>
 作为BLE扫描结果的接口，下面是BluetoothAdapter.LeScanCallback的实现。
-
+<p>
 private LeDeviceListAdapter mLeDeviceListAdapter;
 ...
 // Device scan callback.
@@ -145,31 +145,31 @@ private BluetoothAdapter.LeScanCallback mLeScanCallback =
    }
 };
 注意：只能扫描BLE设备或者扫描传统蓝牙设备，不能同时扫描BLE和传统蓝牙设备。
-
+<p>
 连接到GATT服务端
-
+<p>
 与一个BLE设备交互的第一步就是连接它——更具体的，连接到BLE设备上的GATT服务端。为了连接到BLE设备上的GATT服务端，需要使用connectGatt( )方法。这个方法需要三个参数：一个Context对象，自动连接（boolean值,表示只要BLE设备可用是否自动连接到它），和BluetoothGattCallback调用。
-
+<p>
 mBluetoothGatt = device.connectGatt(this, false, mGattCallback);
 连接到GATT服务端时，由BLE设备做主机，并返回一个BluetoothGatt实例，然后你可以使用这个实例来进行GATT客户端操作。请求方（Android app)是GATT客户端。BluetoothGattCallback用于传递结果给用户，例如连接状态，以及任何进一步GATT客户端操作。
-
+<p>
 在这个例子中，这个BLE APP提供了一个activity（DeviceControlActivity)来连接，显示数据，显示该设备支持的GATT services和characteristics。根据用户的输入，这个activity与BluetoothLeService通信，通过Android BLE API实现与BLE设备交互。
-
+<p>
 //通过BLE API服务端与BLE设备交互
 public class BluetoothLeService extends Service {
     private final static String TAG = BluetoothLeService.class.getSimpleName();
-
+<p>
 
 private BluetoothManager mBluetoothManager; //蓝牙管理器
 private BluetoothAdapter mBluetoothAdapter; //蓝牙适配器
 private String mBluetoothDeviceAddress; //蓝牙设备地址
 private BluetoothGatt mBluetoothGatt; 
 private int mConnectionState = STATE_DISCONNECTED;
-
+<p>
 private static final int STATE_DISCONNECTED = 0; //设备无法连接
 private static final int STATE_CONNECTING = 1;  //设备正在连接状态
 private static final int STATE_CONNECTED = 2;   //设备连接完毕
-
+<p>
 public final static String ACTION_GATT_CONNECTED =
         "com.example.bluetooth.le.ACTION_GATT_CONNECTED";
 public final static String ACTION_GATT_DISCONNECTED =
@@ -183,7 +183,7 @@ public final static String EXTRA_DATA =
 
 public final static UUID UUID_HEART_RATE_MEASUREMENT =
         UUID.fromString(SampleGattAttributes.HEART_RATE_MEASUREMENT);
-
+<p>
 //通过BLE API的不同类型的回调方法
 private final BluetoothGattCallback mGattCallback =
         new BluetoothGattCallback() {
@@ -206,7 +206,7 @@ private final BluetoothGattCallback mGattCallback =
             broadcastUpdate(intentAction);
         }
     }
-
+<p>
     @Override
     // 发现新服务端
     public void onServicesDiscovered(BluetoothGatt gatt, int status) {
@@ -216,7 +216,7 @@ private final BluetoothGattCallback mGattCallback =
             Log.w(TAG, "onServicesDiscovered received: " + status);
         }
     }
-
+<p>
     @Override
     // 读写特性
     public void onCharacteristicRead(BluetoothGatt gatt,
@@ -231,16 +231,16 @@ private final BluetoothGattCallback mGattCallback =
 ...
 }
 当一个特定的回调被触发的时候，它会调用相应的broadcastUpdate()辅助方法并且传递给它一个action。注意在该部分中的数据解析按照蓝牙心率测量配置文件规格进行。
-
+<p>
 private void broadcastUpdate(final String action) {
     final Intent intent = new Intent(action);
     sendBroadcast(intent);
 }
-
+<p>
 private void broadcastUpdate(final String action,
 final BluetoothGattCharacteristic characteristic) {
 final Intent intent = new Intent(action);
-
+<p>
 
 // 这是心率测量配置文件。
 if (UUID_HEART_RATE_MEASUREMENT.equals(characteristic.getUuid())) {
@@ -270,7 +270,7 @@ if (UUID_HEART_RATE_MEASUREMENT.equals(characteristic.getUuid())) {
 sendBroadcast(intent);
 }
 返回DeviceControlActivity, 这些事件由一个BroadcastReceiver来处理:
-
+<p>
 // 通过服务控制不同的事件
 // ACTION_GATT_CONNECTED: 连接到GATT服务端
 // ACTION_GATT_DISCONNECTED: 未连接GATT服务端.
@@ -299,9 +299,9 @@ private final BroadcastReceiver mGattUpdateReceiver = new BroadcastReceiver() {
     }
 };
 读取BLE变量
-
+<p>
 你的android app完成与GATT服务端连接和发现services后，就可以读写支持的属性。例如，这段代码通过服务端的services和 characteristics迭代，并且将它们显示在UI上。
-
+<p>
 public class DeviceControlActivity extends Activity {
     ...
     // 演示如何遍历支持GATT Services/Characteristics
@@ -359,7 +359,7 @@ public class DeviceControlActivity extends Activity {
 ...
 }
 接收GATT通知
-
+<p>
 当设备上的特性改变时会通知BLE应用程序。这段代码显示了如何使用setCharacteristicNotification( )给一个特性设置通知。
 
 private BluetoothGatt mBluetoothGatt;
@@ -373,7 +373,7 @@ BluetoothGattDescriptor descriptor = characteristic.getDescriptor(
 descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
 mBluetoothGatt.writeDescriptor(descriptor);
 如果对一个特性启用通知,当远程蓝牙设备特性发送变化，回调函数onCharacteristicChanged( ))被触发。
-
+<p>
 @Override
 // 广播更新
 public void onCharacteristicChanged(BluetoothGatt gatt,
@@ -381,10 +381,10 @@ public void onCharacteristicChanged(BluetoothGatt gatt,
     broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
 }
 关闭客户端App
-
+<p>
 当你的app完成BLE设备的使用后，应该调用close( ))，系统可以合理释放占用资源。
 
-
+<p>
 public void close() {
     if (mBluetoothGatt == null) {
         return;
@@ -393,9 +393,7 @@ public void close() {
     mBluetoothGatt = null;
 }</code
 
-文／风雨byt（简书作者）
-原文链接：http://www.jianshu.com/p/bc408af3dd92
-著作权归作者所有，转载请联系作者获得授权，并标注“简书作者”。<a href="https://guides.github.com/features/mastering-markdown/">using GitHub Flavored Markdown</a>, select a template crafted by a designer, and publish. After your page is generated, you can check out the new <code>gh-pages</code> branch locally. If you’re using GitHub Desktop, simply sync your repository and you’ll see the new branch.</p>
+<a href="https://guides.github.com/features/mastering-markdown/">using GitHub Flavored Markdown</a>, select a template crafted by a designer, and publish. After your page is generated, you can check out the new <code>gh-pages</code> branch locally. If you’re using GitHub Desktop, simply sync your repository and you’ll see the new branch.</p>
 
 <h3>
 <a id="designer-templates" class="anchor" href="#designer-templates" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Designer Templates</h3>
